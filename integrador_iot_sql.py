@@ -12,7 +12,7 @@ from datetime import datetime
 # CONFIGURAÇÕES DO EVENT HUB
 # ============================
 
-EVENTHUB_CONNECTION_STR = "CONEXAO-EVENT-HUB"
+EVENTHUB_CONNECTION_STR = "Endpoint=sb://ihsuprodbnres008dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=HfmsFr0BFjDkB7X51U4ywmKXKLDsBf4SWAIoTPgwexU=;EntityPath=iothub-ehub-iot-rescue-67515962-0df235a828"
 
 # ============================
 # CONFIGURAÇÕES DO BANCO DE DADOS
