@@ -17,10 +17,10 @@ EVENTHUB_CONNECTION_STR = "CONEXAO-EVENT-HUB"
 # ============================
 # CONFIGURAÇÕES DO BANCO DE DADOS
 # ============================
-server = 'NOME-COMPETO-DO-SERVIDOR' # com o sufixo: .database.windows.net
-database = 'robotic-mission-db-rm9999'
-username = 'rm9999'
-password = 'SUA-SENHA-AQUI'  # Sem @ como caracter
+server = 'sr-robotic-mission-db-rm96322.database.windows.net' # com o sufixo: .database.windows.net
+database = 'robotic-mission-db-rm96322'
+username = 'rm96322'
+password = 'Pablo261628'  # Sem @ como caracter
 driver = '{ODBC Driver 18 for SQL Server}'
 
 # Cria conexão com o Banco
