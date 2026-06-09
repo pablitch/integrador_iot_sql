@@ -17,7 +17,7 @@ EVENTHUB_CONNECTION_STR = "Endpoint=sb://ihsuprodbnres008dednamespace.servicebus
 # ============================
 # CONFIGURAÇÕES DO BANCO DE DADOS
 # ============================
-server = 'sr-robotic-mission-db-rm96322.database.windows.net' # com o sufixo: .database.windows.net
+server = 'sr-robotic-mission-db-rm9999.database.windows.net' # com o sufixo: .database.windows.net
 database = 'robotic-mission-db-rm96322'
 username = 'rm96322'
 password = 'Pablo261628'  # Sem @ como caracter
