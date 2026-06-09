@@ -19,7 +19,7 @@ EVENTHUB_CONNECTION_STR = "Endpoint=sb://ihsuprodbnres008dednamespace.servicebus
 # ============================
 server = 'sr-robotic-mission-db-rm9999.database.windows.net' # com o sufixo: .database.windows.net
 database = 'robotic-mission-db-rm96322'
-username = 'rm96322'
+username = 'robotic'
 password = 'Pablo261628'  # Sem @ como caracter
 driver = '{ODBC Driver 18 for SQL Server}'
 
