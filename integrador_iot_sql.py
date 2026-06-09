@@ -6,29 +6,39 @@
 from azure.eventhub import EventHubConsumerClient
 import pyodbc
 import json
-from datetime import datetime
 
 # ============================
 # CONFIGURAÇÕES DO EVENT HUB
 # ============================
 
-EVENTHUB_CONNECTION_STR = "Endpoint=sb://ihsuprodbnres008dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=HfmsFr0BFjDkB7X51U4ywmKXKLDsBf4SWAIoTPgwexU=;EntityPath=iothub-ehub-iot-rescue-67515962-0df235a828"
+EVENTHUB_CONNECTION_STR = "SUA_CONNECTION_STRING_DO_EVENT_HUB"
 
 # ============================
 # CONFIGURAÇÕES DO BANCO DE DADOS
 # ============================
-server = 'sr-robotic-mission-db-rm9999.database.windows.net' # com o sufixo: .database.windows.net
+server = 'tcp:sr-robotic-mission-db-rm9999.database.windows.net,1433'
 database = 'robotic-mission-db-rm96322'
 username = 'robotic'
-password = 'Pablo261628'  # Sem @ como caracter
+password = 'SUA_SENHA_DO_BANCO'
 driver = '{ODBC Driver 18 for SQL Server}'
 
 # Cria conexão com o Banco
 try:
-    conn_str = f'DRIVER={driver};SERVER={server};DATABASE={database};UID={username};PWD={password}'
+    conn_str = (
+        f'DRIVER={driver};'
+        f'SERVER={server};'
+        f'DATABASE={database};'
+        f'UID={username};'
+        f'PWD={password};'
+        'Encrypt=yes;'
+        'TrustServerCertificate=no;'
+        'Connection Timeout=30;'
+    )
+
     conn = pyodbc.connect(conn_str)
     cursor = conn.cursor()
     print("✅ Conectado ao Banco SQL com sucesso!")
+
 except Exception as e:
     print("❌ Erro ao conectar ao Banco SQL:", e)
     exit()
@@ -42,6 +52,7 @@ def inserir_no_banco(temperatura):
         cursor.execute(query, (temperatura,))
         conn.commit()
         print(f"💾 Dado inserido no banco: {temperatura} °C")
+
     except Exception as e:
         print("❌ Erro ao inserir no banco:", e)
 
@@ -50,14 +61,19 @@ def inserir_no_banco(temperatura):
 # ============================
 def on_event(partition_context, event):
     try:
-        dados = json.loads(event.body_as_str())
-        temperatura = dados.get("temperatura")
+        mensagem = event.body_as_str()
+        print("📩 Mensagem recebida bruta:", mensagem)
+
+        dados = json.loads(mensagem)
+
+        # Aceita tanto o campo em português quanto em inglês
+        temperatura = dados.get("temperatura") or dados.get("temperature")
 
         if temperatura is not None:
-            print(f"📡 Mensagem recebida: {temperatura} °C")
+            print(f"📡 Temperatura recebida: {temperatura} °C")
             inserir_no_banco(temperatura)
         else:
-            print("⚠️ Mensagem sem campo 'temperatura':", dados)
+            print("⚠️ Mensagem sem campo de temperatura:", dados)
 
     except Exception as e:
         print("❌ Erro ao processar mensagem:", e)
@@ -77,12 +93,13 @@ if __name__ == '__main__':
         with client:
             client.receive(
                 on_event=on_event,
-                starting_position="-1"  # Lê mensagens recentes
+                starting_position="@latest"
             )
+
     except KeyboardInterrupt:
         print("\n🛑 Interrompido pelo usuário.")
+
     finally:
         cursor.close()
         conn.close()
         print("🔒 Conexão com o banco encerrada.")
-
